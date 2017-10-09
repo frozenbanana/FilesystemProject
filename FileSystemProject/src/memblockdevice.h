@@ -1,6 +1,7 @@
 #ifndef MEMBLOCKDEVICE_H
 #define MEMBLOCKDEVICE_H
 #include "blockdevice.h"
+#include "block.h"
 
 class MemBlockDevice: public BlockDevice
 {
@@ -30,6 +31,12 @@ public:
 
     /* Return the size */
     int size() const;
+
+    std::list<int> GetFreeBlockIndex;
+    void ReclaimBlock(Block block);
+
+private:
+    std::list<Block> m_FreeBlockList;
 };
 
 #endif // MEMBLOCKDEVICE_H

@@ -1,15 +1,19 @@
 #include "memblockdevice.h"
 #include <stdexcept>
 
-MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks) {
-
+MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)
+{
+  m_FreeBlocksIndex(nrOfBlocks);   
 }
 
-MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
 
+MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
+  m_FreeBlockIndex.clear();
+  m_FreeBlocksIndex = other->GetFreeBlockIndex; 
 }
 
 MemBlockDevice::~MemBlockDevice() {
+  m_FreeBlockIndex.clear();
     /* Implicit call to base-class destructor */
 }
 
@@ -35,8 +39,7 @@ Block& MemBlockDevice::operator[](int index) const {
 }
 
 int MemBlockDevice::spaceLeft() const {
-    /* Not yet implemented */
-    return 0;
+    return m_FreeBlockIndex.size() * m_FreeBlockList[0].size();
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -89,4 +92,14 @@ void MemBlockDevice::reset() {
 
 int MemBlockDevice::size() const {
     return this->nrOfBlocks;
+}
+
+std::list<Block> MemBlockDevice::GetFreeBlockIndex()
+{
+  return m_FreeBlockIndex:
+}
+
+void MemBlockDevice::ReclaimBlock(int blockIndex)
+{ 
+  this->freeBlocksIndex.push(blockIndex);
 }
