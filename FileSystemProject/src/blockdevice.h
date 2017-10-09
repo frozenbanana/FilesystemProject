@@ -12,7 +12,7 @@ class BlockDevice
 protected:
     Block* memBlocks;
     int nrOfBlocks;
-    int freePointer;
+//    int freePointer;
 public:
     BlockDevice(int nrOfBlocks);
     BlockDevice(const BlockDevice &other);
