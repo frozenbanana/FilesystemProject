@@ -1,28 +1,49 @@
 #include "INode.h"
 
+DataBlockHandle::DataBlockHandle()
+{
+  m_thisDataBlock = nullptr;
+  m_nextDataHandle = nullptr;
+}
+
+DataBlockHandle::~DataBlockHandle()
+{
+
+}
+
+
+
+
+// PRIVATE FUNCTIONS
+
+void INode::cleanINode(DataBlockHandle *DataBlockHandle_in)
+{
+  if (DataBlockHandle_in->m_nextDataHandle != nullptr)
+    m_cleanINode(m_nextDataHandle);
+
+  delete DataBlockHandle_in;
+}
+
+
 INode::INode()
 {
   m_isDirectory = false;
-  m_name = "UNKNOWN";
-  m_addressLocation = nullptr;
 
   for (int i = 0; i < 10; i++)
     permissionData[i] = 0;
 }
 
-INode::INode(bool isDirectory_in, std::string name_in, void *addressLocation_in, bool *permissionData)
+INode::INode(bool isDirectory_in, bool *permissionData_in)
 {
-  m_isDirectory = isDirectyory_in;
-  m_name = name_in;
-  m_addressLocation = addressLocation_in;
+  m_isDirectory = isDirectory_in;
   
   for (int i = 0; i < 10; i++)
-    m_permissionData[i] = permissionData[i];
+    m_permissionData[i] = permissionData_in[i];
 }
 
 
 INode::~INode()
 {
-  // NOTE: *m_addressLocation is never NEW'd and should therefore not be
-  // deallocated here (more appropriate is within 'memblockdevice').
+  if (m_rootDataHandle.m_nextDataHandle != nullptr)
+    m_cleanINode(m_rootDataHandle.m_nextDataHandle);
 }
