@@ -9,14 +9,14 @@
 class DataBlockHandle
 {
   private:
-    DATABLOCK_POINTER   *m_thisDataBlock;
-    DataBloickHandle      *m_nextDataHandle;
+    DATABLOCK_POINTER   *m_thisDataBlock;   // Data type STILL TO BE DETERMINED
+    DataBlockHandle      *m_nextDataHandle;
 
   public:
     DataBlockHandle();
     ~DataBlockHandle();
 
-    // Need to implement a function (m_extend()) to extend 'Triangle' list
+    *DataBlockHandle extendHandleList();
 }
 
 class INode

@@ -13,16 +13,39 @@ DataBlockHandle::~DataBlockHandle()
 
 
 
+// PUBLIC FUNCTIONS
+
+DataBlockHandle::extendHandleList()
+{
+  DataBlockHandle *tempHandle;
+
+  if (m_rootDataHandle.m_nextDataHandle != nullptr)
+  {
+    tempHandle = m_rootDataHandle.m_nextDataHandle;
+    
+    while (tempHandle != nullptr)
+      tempHandle = tempHandle.m_nextDataHandle;
+
+    tempHandle.m_nextDataHandle = new DataBlockHandle;
+  }
+
+  return tempHandle.m_nextDataHandle;
+}
+
 
 // PRIVATE FUNCTIONS
 
-void INode::cleanINode(DataBlockHandle *DataBlockHandle_in)
+void INode::m_cleanINode(DataBlockHandle *DataBlockHandle_in)
 {
   if (DataBlockHandle_in->m_nextDataHandle != nullptr)
     m_cleanINode(m_nextDataHandle);
 
   delete DataBlockHandle_in;
 }
+
+
+
+
 
 
 INode::INode()
@@ -42,8 +65,13 @@ INode::INode(bool isDirectory_in, bool *permissionData_in)
 }
 
 
+
 INode::~INode()
 {
   if (m_rootDataHandle.m_nextDataHandle != nullptr)
     m_cleanINode(m_rootDataHandle.m_nextDataHandle);
 }
+
+
+
+
