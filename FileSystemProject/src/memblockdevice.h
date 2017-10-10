@@ -1,5 +1,7 @@
 #ifndef MEMBLOCKDEVICE_H
 #define MEMBLOCKDEVICE_H
+#include <iostream>
+#include <list>
 #include "blockdevice.h"
 #include "block.h"
 #include "INode.h"

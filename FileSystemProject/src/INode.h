@@ -4,20 +4,19 @@
 
 #include <string>
 #include <iostream>
-#include <stdio>
 
 class DataBlockHandle
 {
   private:
-    DATABLOCK_POINTER   *m_thisDataBlock;   // Data type STILL TO BE DETERMINED
+    //DATABLOCK_POINTER   *m_thisDataBlock;   // Data type STILL TO BE DETERMINED
     DataBlockHandle      *m_nextDataHandle;
 
   public:
     DataBlockHandle();
     ~DataBlockHandle();
 
-    *DataBlockHandle extendHandleList();
-}
+    //*DataBlockHandle extendHandleList();
+};
 
 class INode
 {
@@ -32,4 +31,4 @@ class INode
     INode();
     INode(bool isDirectory_in, bool *permissionData_in);
     ~INode();
-}
+};
