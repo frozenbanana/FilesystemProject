@@ -105,14 +105,15 @@ void MemBlockDevice::ReclaimBlock(int blockIndex)
   this->freeBlocksIndex.push(blockIndex);
 }
 
-
 bool MemBlockDevice::JoinBlockToINode(*INode node)
 { 
   bool success = false;
   if( fileSize > m_FreeBlockList.size() * memBlocks[0].size() )
-    return sucess;
+    return success;
 
-      // Join block to INode 
+  if( m_FreeBlockList.empty() ) 
+    return succes;
+  // Join block to INode 
   while( node->current != nullptr )
   {
       int blockAddress = m_FreeBlockList.pop_front();
