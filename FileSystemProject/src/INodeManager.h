@@ -4,7 +4,6 @@
 
 #include <string>
 #include <iostream>
-#include <stack>
 #include <stdio.h>
 #include "INode.h"
 
@@ -13,15 +12,27 @@
 
 class INodeManager
 {
-    private:
-		int					m_FreeINodeCount;
-		std::stack<INode*>	m_freeINodeStack;
+private:
+	INode		m_INodeList[INODE_COUNT];		// Static list of ALL INodes
 
-		void				cleanINodeStack();
+	int			m_FreeINodeCount = INODE_COUNT;	// Current # of free INodes
+	INode*		m_FreeINodeList[INODE_COUNT];	// Static list of all FREE INodes
 
-    public:  
+    public:
 		INodeManager();
 		~INodeManager();
+
+		/* - - - - - FUNCTION COMMENTS - - - - -
+		 • 'Pops' and returns the address to a free INode
+		 • RETURN VALUE: 0 free INodes = nullptr, else address
+		*/
+		INode*		PopFreeINode();
+
+		/* - - - - - FUNCTION COMMENTS - - - - -
+		 • 'Pushes' a free INode back into the 'FreeINodeList'
+		 • RETURN VALUE: 'true' if successful, else 'false'
+		*/
+		bool		PushFreeINode(INode* INode_in);
 };
 
 #endif

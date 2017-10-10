@@ -13,12 +13,12 @@ DataBlockHandle::~DataBlockHandle()
 
 }
 
-int* DataBlockHandle::getDataBlock()
+int* DataBlockHandle::GetDataBlock()
 {
 	return m_thisDataBlock;
 }
 
-void DataBlockHandle::setDataBlock(int *dataBlock_in)
+void DataBlockHandle::SetDataBlock(int *dataBlock_in)
 {
 	m_thisDataBlock = dataBlock_in;
 }
@@ -32,20 +32,28 @@ void DataBlockHandle::setDataBlock(int *dataBlock_in)
 
 // PRIVATE FUNCTIONS
 
-void INode::cleanAll()
+/*- - - - - FUNCTION COMMENTS - - - - -
+Makes use of two clean functions
+ • CleanAll() gives initial access to root
+ • CleanNextDataHandle recursively deletes all past root*/
+void INode::CleanAll()
 {
 	if (m_rootDataHandle.m_nextDataHandle != nullptr)
-		m_cleanNextDataHandle(m_rootDataHandle.m_nextDataHandle);
+		m_CleanNextDataHandle(m_rootDataHandle.m_nextDataHandle);
+
+	// No 'delete' due to static root
 }
 
-void INode::m_cleanNextDataHandle(DataBlockHandle *DataBlockHandle_in)
+/*- - - - FUNCTION COMMENTS - - - - -
+See 'Function Comments' for 'CleanAll() function*/
+void INode::m_CleanNextDataHandle(DataBlockHandle *DataBlockHandle_in)
 {
   if (DataBlockHandle_in->m_nextDataHandle != nullptr)
-	  m_cleanNextDataHandle(DataBlockHandle_in->m_nextDataHandle);
+	  m_CleanNextDataHandle(DataBlockHandle_in->m_nextDataHandle);
 
-  delete DataBlockHandle_in;
-  delete this;
-}
+  delete DataBlockHandle_in;	// Recursively calling this function down until,
+}								// but not including, the root.
+
 
 
 
@@ -75,7 +83,7 @@ INode::~INode()
 }
 
 
-DataBlockHandle* INode::extendHandleList()
+DataBlockHandle* INode::ExtendHandleList()
 {
 	DataBlockHandle *tempHandle;
 

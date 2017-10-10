@@ -1,34 +1,49 @@
 #include "INodeManager.h"
 
 
-// PRIVATE FUNCTIONS
-
-void INodeManager::cleanINodeStack()
-{
-	for (int i = 0; i < INODE_COUNT; i++)
-	{
-		
-	}
-}
-
-
 INodeManager::INodeManager()
 {
-	INode*		temp_INodePointers[INODE_COUNT];
-
-  for (int i = 0; i < INODE_COUNT; i++)
-  {
-	  temp_INodePointers[i] = new INode;
-	  m_freeINodeStack.push(temp_INodePointers[i]);
-  }
+	for (int i = 0; i < INODE_COUNT; i++)
+		m_FreeINodeList[i] = &(m_INodeList[i]);
 }
 
 INodeManager::~INodeManager()
 {
-	INode*		temp_INodePointer;
 
-	for (int i = 0; i < INODE_COUNT; i++)
+}
+
+
+
+// PUBLIC FUNCTIONS
+
+INode* INodeManager::PopFreeINode()
+{
+	INode*	tempINodeHolder = nullptr;	// Will temp. hold addr. to popped INode
+	int		tempArraySlot = (m_FreeINodeCount - 1);
+
+	if (tempArraySlot >= 0 && tempArraySlot < 250)
 	{
-		temp_INodePointer = m_freeINodeStack.pop(); // Currently the problem, need to rethink
+		tempINodeHolder = m_FreeINodeList[tempArraySlot];	// INode moved to temp
+		m_FreeINodeList[tempArraySlot] = nullptr;	// 'Deleting' INode from 'free'-list
+
+		m_FreeINodeCount--;	// Updating FreeINodeCount (1 INode removed, --)
 	}
+
+	return tempINodeHolder;
+}
+
+bool INodeManager::PushFreeINode(INode* INode_in)
+{
+	bool returnValue = false; // Return value (false = default = unsuccessful)
+	int tempArraySlot = m_FreeINodeCount;
+
+	if (tempArraySlot >= 0 && tempArraySlot < 250)
+	{
+		m_FreeINodeList[tempArraySlot] = INode_in;	// Earliest free slot now occupied
+		m_FreeINodeCount++;	// Updating FreeINodeCount (1 INode added, ++)
+
+		returnValue = true;
+	}
+
+	return returnValue;
 }

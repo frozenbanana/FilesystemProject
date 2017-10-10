@@ -7,33 +7,21 @@
 
 #include <string>
 #include <iostream>
-<<<<<<< HEAD
 #include <stdio.h>
-=======
->>>>>>> 5c54fd232002c26a7ae69712ed6b916940d5ddd2
 
 class DataBlockHandle
 {
   private:
-<<<<<<< HEAD
     int		*m_thisDataBlock;   // Data type STILL TO BE DETERMINED
-=======
-    //DATABLOCK_POINTER   *m_thisDataBlock;   // Data type STILL TO BE DETERMINED
-    DataBlockHandle      *m_nextDataHandle;
->>>>>>> 5c54fd232002c26a7ae69712ed6b916940d5ddd2
 
   public:
     DataBlockHandle();
     ~DataBlockHandle();
 
-<<<<<<< HEAD
-	int*	getDataBlock();
-	void	setDataBlock(int *dataBlock_in);
+	int*	GetDataBlock();
+	void	SetDataBlock(int *dataBlock_in);
 
 	DataBlockHandle      *m_nextDataHandle;
-=======
-    //*DataBlockHandle extendHandleList();
->>>>>>> 5c54fd232002c26a7ae69712ed6b916940d5ddd2
 };
 
 class INode
@@ -43,19 +31,19 @@ class INode
     DataBlockHandle		m_rootDataHandle;
     bool				m_permissionData[10];
 
-	void				cleanAll();
-    void				m_cleanNextDataHandle(DataBlockHandle *DataBlockHandle_in);
+	void				CleanAll();
+    void				m_CleanNextDataHandle(DataBlockHandle *DataBlockHandle_in);
 
   public:
     INode();
     INode(bool isDirectory_in, bool *permissionData_in);
     ~INode();
-<<<<<<< HEAD
 
-	DataBlockHandle* extendHandleList();
+	/*- - - - - FUNCTION COMMENTS - - - - -
+	 • Extends the linked list within the INode
+	 • RECAP: Members of linked list point to 1 DataBlock each
+	 • RETURN VALUE: Address of new 'DataBlockHandle' member*/
+	DataBlockHandle* ExtendHandleList();
 };
 
 #endif
-=======
-};
->>>>>>> 5c54fd232002c26a7ae69712ed6b916940d5ddd2
