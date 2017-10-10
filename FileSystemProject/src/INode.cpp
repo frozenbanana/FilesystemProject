@@ -1,5 +1,7 @@
 #include "INode.h"
 
+// PUBLIC FUNCTIONS
+
 DataBlockHandle::DataBlockHandle()
 {
   m_thisDataBlock = nullptr;
@@ -11,49 +13,50 @@ DataBlockHandle::~DataBlockHandle()
 
 }
 
-
-
-// PUBLIC FUNCTIONS
-
-DataBlockHandle::extendHandleList()
+int* DataBlockHandle::getDataBlock()
 {
-  DataBlockHandle *tempHandle;
-
-  if (m_rootDataHandle.m_nextDataHandle != nullptr)
-  {
-    tempHandle = m_rootDataHandle.m_nextDataHandle;
-    
-    while (tempHandle != nullptr)
-      tempHandle = tempHandle.m_nextDataHandle;
-
-    tempHandle.m_nextDataHandle = new DataBlockHandle;
-  }
-
-  return tempHandle.m_nextDataHandle;
+	return m_thisDataBlock;
 }
+
+void DataBlockHandle::setDataBlock(int *dataBlock_in)
+{
+	m_thisDataBlock = dataBlock_in;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 
 // PRIVATE FUNCTIONS
 
-void INode::m_cleanINode(DataBlockHandle *DataBlockHandle_in)
+void INode::cleanAll()
+{
+	if (m_rootDataHandle.m_nextDataHandle != nullptr)
+		m_cleanNextDataHandle(m_rootDataHandle.m_nextDataHandle);
+}
+
+void INode::m_cleanNextDataHandle(DataBlockHandle *DataBlockHandle_in)
 {
   if (DataBlockHandle_in->m_nextDataHandle != nullptr)
-    m_cleanINode(m_nextDataHandle);
+	  m_cleanNextDataHandle(DataBlockHandle_in->m_nextDataHandle);
 
   delete DataBlockHandle_in;
+  delete this;
 }
 
 
 
-
-
+// PUBLIC FUNCTIONS
 
 INode::INode()
 {
   m_isDirectory = false;
 
   for (int i = 0; i < 10; i++)
-    permissionData[i] = 0;
+    m_permissionData[i] = 0;
 }
 
 INode::INode(bool isDirectory_in, bool *permissionData_in)
@@ -68,10 +71,23 @@ INode::INode(bool isDirectory_in, bool *permissionData_in)
 
 INode::~INode()
 {
-  if (m_rootDataHandle.m_nextDataHandle != nullptr)
-    m_cleanINode(m_rootDataHandle.m_nextDataHandle);
+
 }
 
 
+DataBlockHandle* INode::extendHandleList()
+{
+	DataBlockHandle *tempHandle;
 
+	if (m_rootDataHandle.m_nextDataHandle != nullptr)
+	{
+		tempHandle = m_rootDataHandle.m_nextDataHandle;
 
+		while (tempHandle->m_nextDataHandle != nullptr)
+			tempHandle = tempHandle->m_nextDataHandle;
+
+		tempHandle->m_nextDataHandle = new DataBlockHandle;
+	}
+
+	return tempHandle->m_nextDataHandle;
+}

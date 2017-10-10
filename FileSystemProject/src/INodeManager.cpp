@@ -1,35 +1,34 @@
 #include "INodeManager.h"
 
 
+// PRIVATE FUNCTIONS
 
-
-
-INode_Handle::INode_Handle()
+void INodeManager::cleanINodeStack()
 {
-  m_underneath = nullptr;
+	for (int i = 0; i < INODE_COUNT; i++)
+	{
+		
+	}
 }
-
-INode_Handle::~INode_Handle()
-{
-
-}
-
-
-
 
 
 INodeManager::INodeManager()
 {
-  m_FreeINodeCount = INODE_COUNT;   // Total number of INode free shells (also number of INodes)
-
-  INode_Handle *temp_FreeHandle;             // Temp INodeHandle for below for-loop
-
-  m_stackTop = new INode_Handle;
+	INode*		temp_INodePointers[INODE_COUNT];
 
   for (int i = 0; i < INODE_COUNT; i++)
   {
-    temp_FreeHandle = new INode_Handle;
-    temp_FreeHandle->m_underneath = m_stackTop;
-    m_stackTop = temp_FreeHandle;
+	  temp_INodePointers[i] = new INode;
+	  m_freeINodeStack.push(temp_INodePointers[i]);
   }
+}
+
+INodeManager::~INodeManager()
+{
+	INode*		temp_INodePointer;
+
+	for (int i = 0; i < INODE_COUNT; i++)
+	{
+		temp_INodePointer = m_freeINodeStack.pop(); // Currently the problem, need to rethink
+	}
 }
