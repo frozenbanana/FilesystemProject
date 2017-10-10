@@ -2,6 +2,7 @@
 #define MEMBLOCKDEVICE_H
 #include "blockdevice.h"
 #include "block.h"
+#include "INode.h"
 
 class MemBlockDevice: public BlockDevice
 {
@@ -33,7 +34,8 @@ public:
     int size() const;
 
     std::list<int> GetFreeBlockIndex;
-    void ReclaimBlock(Block block);
+    void ReclaimBlock(int blockIndex);
+    bool JoinBlockToINode(INode* node, int fileSize);
 
 private:
     std::list<Block> m_FreeBlockList;

@@ -3,9 +3,9 @@
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)
 {
+  memBlocks = new Block[nrOfBlocks];
   m_FreeBlocksIndex(nrOfBlocks);   
 }
-
 
 MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
   m_FreeBlockIndex.clear();
@@ -39,7 +39,7 @@ Block& MemBlockDevice::operator[](int index) const {
 }
 
 int MemBlockDevice::spaceLeft() const {
-    return m_FreeBlockIndex.size() * m_FreeBlockList[0].size();
+    return m_FreeBlockIndex.size() * memBlocks[0].size();
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -64,7 +64,8 @@ int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) {
     return output;
 }
 
-int MemBlockDevice::writeBlock(int blockNr, const char cArr[]) {
+int MemBlockDevice::writeBlock(int blockNr, const char cArr[]) 
+{
     int output = -1;    // Assume blockNr out-of-range
     if (blockNr < this->nrOfBlocks && blockNr >= 0) {
         output = 1;
@@ -102,4 +103,20 @@ std::list<Block> MemBlockDevice::GetFreeBlockIndex()
 void MemBlockDevice::ReclaimBlock(int blockIndex)
 { 
   this->freeBlocksIndex.push(blockIndex);
+}
+
+
+bool MemBlockDevice::JoinBlockToINode(*INode node)
+{ 
+  bool success = false;
+  if( fileSize > m_FreeBlockList.size() * memBlocks[0].size() )
+    return sucess;
+
+      // Join block to INode 
+  while( node->current != nullptr )
+  {
+      int blockAddress = m_FreeBlockList.pop_front();
+      node->AttachDataBlock(memBlocks[blockAddress]);
+      node->next():
+  } 
 }
