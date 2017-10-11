@@ -1,13 +1,20 @@
 #include <iostream>
 #include <sstream>
-#include "filesystem.h"
+#include "FileSystem.hpp"
+#include <crtdbg.h>
+
+/*
+
+
+
+*/
 
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 15;
 
 std::string availableCommands[NUMAVAILABLECOMMANDS] = {
-    "quit","format","ls","create","cat","createImage","restoreImage",
-    "rm","cp","append","mv","mkdir","cd","pwd","help"
+	"quit","format","ls","create","cat","createImage","restoreImage",
+	"rm","cp","append","mv","mkdir","cd","pwd","help"
 };
 
 /* Takes usercommand from input and returns number of commands, commands are stored in strArr[] */
@@ -19,85 +26,134 @@ std::string help();
 /* More functions ... */
 
 int main(void) {
+	// ------------------- Vårt -------------------
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	FileSystem system;
+
+	std::string thatsCheating;
+
+	// ------------------- Vårt -------------------
+
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
-	std::string user = "user@DV1492";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";    // current directory, used for output
+	std::string user = "Pr0n@DV1337";    // Change this if you want another user to be displayed
+	std::string currentDir = "/";	// current directory, used for output
 
-    bool bRun = true;
+	bool bRun = true;
 
-    do {
-        std::cout << user << ":" << currentDir << "$ ";
-        getline(std::cin, userCommand);
+	do {
+		std::cout << user << ":" << currentDir << "$ ";
+		getline(std::cin, userCommand);
 
-        int nrOfCommands = parseCommandString(userCommand, commandArr);
-        if (nrOfCommands > 0) {
+		int nrOfCommands = parseCommandString(userCommand, commandArr);
 
-            int cIndex = findCommand(commandArr[0]);
-            switch(cIndex) {
+		if (nrOfCommands > 1) { // Forces "/" to become "root/"
+			if (commandArr[1].at(0) == '/') { 
+				thatsCheating = "";
+				thatsCheating.append("root");
+				thatsCheating.append(commandArr[1]);
+				commandArr[1] = thatsCheating;
+			}
+		}
+		
 
-			case 0: //quit
-				bRun = quit();                
-                break;
-            case 1: // format
-                break;
-            case 2: // ls
-                std::cout << "Listing directory" << std::endl;
-                break;
-            case 3: // create
-                break;
-            case 4: // cat
-                break;
-            case 5: // createImage
-                break;
-            case 6: // restoreImage
-                break;
-            case 7: // rm
-                break;
-            case 8: // cp
-                break;
-            case 9: // append
-                break;
-            case 10: // mv
-                break;
-            case 11: // mkdir
-                break;
-            case 12: // cd
-                break;
-            case 13: // pwd
-                break;
-            case 14: // help
-                std::cout << help() << std::endl;
-                break;
-            default:
-                std::cout << "Unknown command: " << commandArr[0] << std::endl;
-            }
-        }
-    } while (bRun == true);
+		if (nrOfCommands > 0) {
 
-    return 0;
+			int cIndex = findCommand(commandArr[0]);
+			switch (cIndex) {
+
+			case 0: { //quit
+				bRun = quit();
+				break;
+			}
+			case 1: { // format
+				std::cout << "Formatting virtual disk...\n" << std::endl;
+				system.Format();
+				std::cout << "Done!\n" << std::endl;
+				break;
+			}
+			case 2: { // ls
+				std::cout << system.ls();
+				break;
+			}
+			case 3: { // create 
+				system.Create(commandArr[1]);
+				break;
+			}				
+			case 4: {  // cat
+				system.cat(commandArr[1]);
+				break;
+			}
+			case 5: { // createImage
+				system.CreateImage();
+				break;
+			}
+			case 6: { // restoreImage
+				system.RestoreImage();
+				break;
+			}
+			case 7: { // rm
+				system.Remove(commandArr[1]);
+				break;
+			}
+			case 8: { // cp
+				system.Copy(commandArr[1], commandArr[2]);
+				break;
+			}
+			case 9: { // append
+				// EJ NÖDVÄNDIG
+				break;
+			}
+			case 10: { // mv
+				// EJ NÖDVÄNDIG
+				break;
+			}
+			case 11: { // mkdir
+				system.MakeDirectory(commandArr[1]);
+				break;
+			}
+			case 12: { // cd
+				currentDir = system.cd(commandArr[1]);
+				break;
+			}
+			case 13: { // pwd
+				std::cout << system.pwd(commandArr[1]);
+				break;
+			}
+			case 14: { // help
+				std::cout << help() << std::endl;
+				break;
+			}
+
+			default:
+				std::cout << "Unknown command: " << commandArr[0] << std::endl;
+			}
+		}
+	} while (bRun == true);
+
+	return 0;
 }
 
 int parseCommandString(const std::string &userCommand, std::string strArr[]) {
-    std::stringstream ssin(userCommand);
-    int counter = 0;
-    while (ssin.good() && counter < MAXCOMMANDS) {
-        ssin >> strArr[counter];
-        counter++;
-    }
-    if (strArr[0] == "") {
-        counter = 0;
-    }
-    return counter;
+	std::stringstream ssin(userCommand);
+	int counter = 0;
+	while (ssin.good() && counter < MAXCOMMANDS) {
+		ssin >> strArr[counter];
+		counter++;
+	}
+	if (strArr[0] == "") {
+		counter = 0;
+	}
+	return counter;
 }
 int findCommand(std::string &command) {
-    int index = -1;
-    for (int i = 0; i < NUMAVAILABLECOMMANDS && index == -1; ++i) {
-        if (command == availableCommands[i]) {
-            index = i;
-        }
-    }
-    return index;
+	int index = -1;
+	for (int i = 0; i < NUMAVAILABLECOMMANDS && index == -1; ++i) {
+		if (command == availableCommands[i]) {
+			index = i;
+		}
+	}
+	return index;
 }
 
 bool quit() {
@@ -106,25 +162,23 @@ bool quit() {
 }
 
 std::string help() {
-    std::string helpStr;
-    helpStr += "OSD Disk Tool .oO Help Screen Oo.\n";
-    helpStr += "-----------------------------------------------------------------------------------\n" ;
-    helpStr += "* quit:                             Quit OSD Disk Tool\n";
-    helpStr += "* format;                           Formats disk\n";
-    helpStr += "* ls     <path>:                    Lists contents of <path>.\n";
-    helpStr += "* create <path>:                    Creates a file and stores contents in <path>\n";
-    helpStr += "* cat    <path>:                    Dumps contents of <file>.\n";
-    helpStr += "* createImage  <real-file>:         Saves disk to <real-file>\n";
-    helpStr += "* restoreImage <real-file>:         Reads <real-file> onto disk\n";
-    helpStr += "* rm     <file>:                    Removes <file>\n";
-    helpStr += "* cp     <source> <destination>:    Copy <source> to <destination>\n";
-    helpStr += "* append <source> <destination>:    Appends contents of <source> to <destination>\n";
-    helpStr += "* mv     <old-file> <new-file>:     Renames <old-file> to <new-file>\n";
-    helpStr += "* mkdir  <directory>:               Creates a new directory called <directory>\n";
-    helpStr += "* cd     <directory>:               Changes current working directory to <directory>\n";
-    helpStr += "* pwd:                              Get current working directory\n";
-    helpStr += "* help:                             Prints this help screen\n";
-    return helpStr;
+	std::string helpStr;
+	helpStr += "OSD Disk Tool .oO Help Screen Oo.\n";
+	helpStr += "-----------------------------------------------------------------------------------\n";
+	helpStr += "* quit:                             Quit OSD Disk Tool\n";
+	helpStr += "* format;                           Formats disk\n";
+	helpStr += "* ls     <path>:                    Lists contents of <path>.\n";
+	helpStr += "* create <path>:                    Creates a file and stores contents in <path>\n";
+	helpStr += "* cat    <path>:                    Dumps contents of <file>.\n";
+	helpStr += "* createImage  <real-file>:         Saves disk to <real-file>\n";
+	helpStr += "* restoreImage <real-file>:         Reads <real-file> onto disk\n";
+	helpStr += "* rm     <file>:                    Removes <file>\n";
+	helpStr += "* cp     <source> <destination>:    Copy <source> to <destination>\n";
+	helpStr += "* append <source> <destination>:    Appends contents of <source> to <destination>\n";
+	helpStr += "* mv     <old-file> <new-file>:     Renames <old-file> to <new-file>\n";
+	helpStr += "* mkdir  <directory>:               Creates a new directory called <directory>\n";
+	helpStr += "* cd     <directory>:               Changes current working directory to <directory>\n";
+	helpStr += "* pwd:                              Get current working directory\n";
+	helpStr += "* help:                             Prints this help screen\n";
+	return helpStr;
 }
-
-/* Insert code for your shell functions and call them from the switch-case */
