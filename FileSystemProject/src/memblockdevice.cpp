@@ -5,20 +5,23 @@
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)
 {
   memBlocks = new Block[nrOfBlocks];
-  m_FreeBlocksIndex(nrOfBlocks);   
+  for(int i = 0; i < nrOfBlocks; i++){ m_FreeBlocksIndex.push_back(i); }
 }
-
-MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) {
-  m_FreeBlockIndex.clear();
-  m_FreeBlocksIndex = other->GetFreeBlockIndex; 
+     
+MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) 
+{
+  m_FreeBlocksIndex.clear();
+  m_FreeBlocksIndex = other.m_FreeBlocksIndex; 
 }
 
 MemBlockDevice::~MemBlockDevice() {
-  m_FreeBlockIndex.clear();
+    m_FreeBlocksIndex.clear();
+    Destroy();
     /* Implicit call to base-class destructor */
 }
 
-MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
+MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) 
+{
     delete [] this->memBlocks;
     this->nrOfBlocks = other.nrOfBlocks;
     this->m_freeSpaceStart = other.m_freeSpaceStart;
@@ -30,7 +33,8 @@ MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
     return *this;
 }
 
-Block& MemBlockDevice::operator[](int index) const {
+Block& MemBlockDevice::operator[](int index) const 
+{
     if (index < 0 || index >= this->nrOfBlocks) {
         throw std::out_of_range("Illegal access\n");
     }
@@ -39,8 +43,9 @@ Block& MemBlockDevice::operator[](int index) const {
     }
 }
 
-int MemBlockDevice::spaceLeft() const {
-    return m_FreeBlockIndex.size() * memBlocks[0].size();
+int MemBlockDevice::spaceLeft() const 
+{
+    return m_FreeBlocksIndex.size() * memBlocks[0].size();
 }
 
 int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
@@ -54,7 +59,8 @@ int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {
     return output;
 }
 
-int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) {
+int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) 
+{
     int output = -1;    // Assume blockNr out-of-range
 
     if (blockNr < this->nrOfBlocks && blockNr >= 0) {
@@ -96,29 +102,25 @@ int MemBlockDevice::size() const {
     return this->nrOfBlocks;
 }
 
-std::list<Block> MemBlockDevice::GetFreeBlockIndex()
-{
-  return m_FreeBlockIndex:
-}
-
 void MemBlockDevice::ReclaimBlock(int blockIndex)
 { 
-  this->freeBlocksIndex.push(blockIndex);
+  m_FreeBlocksIndex.push_back(blockIndex);
 }
 
-bool MemBlockDevice::JoinBlocksToINode(*INode node, int fileSize)
+bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
 { 
   bool flag = false;
   int amountOfBlocksNeeded = int(ceil(fileSize / memBlocks[0].size()));
   Block** blocksToAttach = new Block*[amountOfBlocksNeeded];
 
-  if( m_FreeBlockList.size() < amountOfBlocksNeeded ) 
+  if( m_FreeBlocksIndex.size() < amountOfBlocksNeeded ) 
     return flag;
   
   // Join block to INode 
   for(int i = 0; i < amountOfBlocksNeeded; i++)
   {
-      int blockAddress = m_FreeBlockList.pop_front();
+      int blockAddress = m_FreeBlocksIndex.back();
+      m_FreeBlocksIndex.pop_back();
       blocksToAttach[i] = &(memBlocks[blockAddress]);
   } 
 
@@ -127,4 +129,18 @@ bool MemBlockDevice::JoinBlocksToINode(*INode node, int fileSize)
   return flag;
 
 }
+
+void MemBlockDevice::Clean()
+{
+    m_FreeBlocksIndex.clear();
+    for(int i = 0; i < nrOfBlocks; i++)
+        m_FreeBlocksIndex.push_back(i);
+}
+
+
+void MemBlockDevice::Destroy()
+{
+    delete [] memBlocks;
+}
+
 

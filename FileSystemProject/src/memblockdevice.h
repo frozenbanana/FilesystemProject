@@ -35,12 +35,12 @@ public:
     /* Return the size */
     int size() const;
 
-    std::list<int> GetFreeBlockIndex;
     void ReclaimBlock(int blockIndex);
-    bool JoinBlockToINode(INode* node, int fileSize);
+    bool JoinBlocksToINode(INode* node, int fileSize);
+    void Clean();
+    void Destroy();
 
-private:
-    std::list<Block> m_FreeBlockList;
+    std::list<int> m_FreeBlocksIndex;
 };
 
 #endif // MEMBLOCKDEVICE_H

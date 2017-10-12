@@ -1,26 +1,29 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
-#include <crtdbg.h>
+//#include <crtdbg.h>
 
-#include "INodeManager.h"
-#include "INode.h"
+//#include "INodeManager.h"
+//#include "INode.h"
+#include "memblockdevice.h"
+
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
-	INodeManager *myManager;
-	myManager = new INodeManager;
+//	INodeManager *myManager;
+//	myManager = new INodeManager;
+//
+//	int tester;
+//
+//	std::cin >> tester;
+//	std::cout << tester;
+//	std::cin >> tester;
+//	std::cout << tester;
+//
+//	delete myManager;
 
-	int tester;
-
-	std::cin >> tester;
-	std::cout << tester;
-	std::cin >> tester;
-	std::cout << tester;
-
-	delete myManager;
 
 	return 0;
 }
