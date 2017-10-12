@@ -14,12 +14,12 @@ BlockHandle::~BlockHandle()
 
 }
 
-int* BlockHandle::GetBlock()
+Block* BlockHandle::GetBlock()
 {
 	return m_thisBlock;
 }
 
-void BlockHandle::SetBlock(int *dataBlock_in)
+void BlockHandle::SetBlock(Block* dataBlock_in)
 {
 	m_thisBlock = dataBlock_in;
 }
@@ -40,7 +40,7 @@ Makes use of two clean functions
 void INode::CleanAll()
 {
 	if (m_rootHandle.m_nextHandle != nullptr)
-		m_CleanNextHandle(m_rootHandle.m_nextHandle);
+		CleanNextHandle(m_rootHandle.m_nextHandle);
 
 	// No 'delete' due to static root
 }
@@ -50,7 +50,7 @@ See 'Function Comments' for 'CleanAll() function*/
 void INode::CleanNextHandle(BlockHandle *BlockHandle_in)
 {
   if (BlockHandle_in->m_nextHandle != nullptr)
-	  m_CleanNextHandle(BlockHandle_in->m_nextHandle);  // Recursive func. call
+	  CleanNextHandle(BlockHandle_in->m_nextHandle);  // Recursive func. call
 
   delete BlockHandle_in;	// Deleting self AFTER having called recursion
 }								
@@ -77,7 +77,7 @@ void INode::ExtendList(BlockHandle* rootHandle_in, int blockCount_in)
     for (int i = 0; i < (blockCount_in - 1); i++)
     {
       tempHandle->m_nextHandle = new BlockHandle;
-      tmepHandle = tempHandle->m_nextHandle;
+      tempHandle = tempHandle->m_nextHandle;
     }
   }
 }
@@ -139,7 +139,7 @@ INode::INode(bool isDirectory_in, bool *permissionData_in)
 
 INode::~INode()
 {
-  m_CleanAll(); 
+  CleanAll(); 
 }
 
 
@@ -149,7 +149,7 @@ bool INode::InsertBlocks(Block* *BlockArray_in, int BlockCount_in)
 	BlockHandle *tempHandle;
   bool        booleanReturnValue = true;
 
-  ExtendList(&m_rootHandle, int BlockCount_in);
+  ExtendList(&m_rootHandle, BlockCount_in);
   
   InsertList(&m_rootHandle, BlockArray_in, BlockCount_in);
 

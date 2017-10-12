@@ -18,11 +18,10 @@ class BlockHandle
   public:
     BlockHandle();
     ~BlockHandle();
+    Block*              GetBlock();
+    void	        SetBlock(Block* Block_in);
 
-  	Block*	GetBlock();
-  	void	  SetBlock(int *Block_in);
-
-	  BlockHandle      *m_nextHandle; // Public in-case someone else needs to 'step'
+    BlockHandle         *m_nextHandle; // Public in-case someone else needs to 'step'
 };
 
 class INode
@@ -31,7 +30,7 @@ class INode
     bool	      			m_isDirectory;
     bool			      	m_permissionData[10];
 
-	  void				CleanAll();
+    void				CleanAll();
     void				CleanNextHandle(BlockHandle *BlockHandle_in);
 
     void        ExtendList(BlockHandle* rootHandle_in, int blockCount_in);
@@ -49,7 +48,7 @@ class INode
 	 • Extends the linked list within the INode
 	 • RECAP: Members of linked list point to 1 Block each
 	 • RETURN VALUE: Address of new 'BlockHandle' member*/
-	  bool  InsertBlocks(int BlockCount_in, Block* *BlockArray_in);
+    bool  InsertBlocks(Block* *BlockArray_in, int BlockCount_in);
 };
 
 #endif
