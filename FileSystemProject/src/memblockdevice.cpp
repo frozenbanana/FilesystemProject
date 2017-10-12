@@ -1,5 +1,6 @@
 #include "memblockdevice.h"
 #include <stdexcept>
+#include <math.h>
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)
 {
@@ -20,7 +21,7 @@ MemBlockDevice::~MemBlockDevice() {
 MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) {
     delete [] this->memBlocks;
     this->nrOfBlocks = other.nrOfBlocks;
-    this->freePointer = other.freePointer;
+    this->m_freeSpaceStart = other.m_freeSpaceStart;
     this->memBlocks = new Block[this->nrOfBlocks];
 
     for (int i = 0; i < this->nrOfBlocks; ++i)
@@ -105,19 +106,25 @@ void MemBlockDevice::ReclaimBlock(int blockIndex)
   this->freeBlocksIndex.push(blockIndex);
 }
 
-bool MemBlockDevice::JoinBlockToINode(*INode node)
+bool MemBlockDevice::JoinBlocksToINode(*INode node, int fileSize)
 { 
-  bool success = false;
-  if( fileSize > m_FreeBlockList.size() * memBlocks[0].size() )
-    return success;
+  bool flag = false;
+  int amountOfBlocksNeeded = int(ceil(fileSize / memBlocks[0].size()));
+  Block** blocksToAttach = new Block*[amountOfBlocksNeeded];
 
-  if( m_FreeBlockList.empty() ) 
-    return succes;
+  if( m_FreeBlockList.size() < amountOfBlocksNeeded ) 
+    return flag;
+  
   // Join block to INode 
-  while( node->current != nullptr )
+  for(int i = 0; i < amountOfBlocksNeeded; i++)
   {
       int blockAddress = m_FreeBlockList.pop_front();
-      node->AttachDataBlock(memBlocks[blockAddress]);
-      node->next():
+      blocksToAttach[i] = &(memBlocks[blockAddress]);
   } 
+
+  node->InsertBlocks(blocksToAttach, amountOfBlocksNeeded); 
+  delete [] blocksToAttach;
+  return flag;
+
 }
+
