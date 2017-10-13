@@ -4,7 +4,6 @@
 
 MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)
 {
-  memBlocks = new Block[nrOfBlocks];
   for(int i = 0; i < nrOfBlocks; i++){ m_FreeBlocksIndex.push_back(i); }
 }
      
@@ -110,10 +109,13 @@ void MemBlockDevice::ReclaimBlock(int blockIndex)
 bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
 { 
   bool flag = false;
-  int amountOfBlocksNeeded = int(ceil(fileSize / memBlocks[0].size()));
+  int amountOfBlocksNeeded = (int)ceil((float)fileSize / (float)memBlocks[0].size());
+  if( amountOfBlocksNeeded )
+      return flag;
+  
   Block** blocksToAttach = new Block*[amountOfBlocksNeeded];
 
-  if( m_FreeBlocksIndex.size() < amountOfBlocksNeeded ) 
+  if( m_FreeBlocksIndex.size() ) 
     return flag;
   
   // Join block to INode 
@@ -125,7 +127,15 @@ bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
   } 
 
   node->InsertBlocks(blocksToAttach, amountOfBlocksNeeded); 
+  
+  // clean temp array
+  for(int i = 0; i < amountOfBlocksNeeded; i++)
+  {
+      blocksToAttach[i] = nullptr;
+  }
+
   delete [] blocksToAttach;
+
   return flag;
 
 }

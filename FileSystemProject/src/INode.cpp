@@ -146,7 +146,7 @@ INode::~INode()
 bool INode::InsertBlocks(Block* *BlockArray_in, int BlockCount_in)
 {
     // Return Bool to check success
-	BlockHandle *tempHandle;
+  BlockHandle *tempHandle;
   bool        booleanReturnValue = true;
 
   ExtendList(&m_rootHandle, BlockCount_in);

@@ -1,7 +1,6 @@
 #include "block.h"
 #include <stdexcept>
 
-
 Block::Block(int size) {
     /* Setting size */
     if (size > 0)
