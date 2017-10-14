@@ -150,7 +150,6 @@ void MemBlockDevice::Clean()
 
 void MemBlockDevice::Destroy()
 {
-    delete [] memBlocks;
 }
 
 

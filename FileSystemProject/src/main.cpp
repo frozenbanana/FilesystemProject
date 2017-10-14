@@ -9,6 +9,7 @@
 
 int main()
 {
+
     std::cout << "Testing starting" << std::endl;
     MemBlockDevice memBD;    
     INodeManager inodeMan;
