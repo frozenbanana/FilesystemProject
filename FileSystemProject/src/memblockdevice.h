@@ -36,6 +36,7 @@ public:
     int size() const;
 
     void ReclaimBlock(int blockIndex);
+    Block** CopyBlocks(BlockHandle* blockHandleRoot, int nrOfBlocks);
     bool JoinBlocksToINode(INode* node, int fileSize);
     void Clean();
     void Destroy();

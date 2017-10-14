@@ -110,12 +110,12 @@ bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
 { 
   bool flag = false;
   int amountOfBlocksNeeded = (int)ceil((float)fileSize / (float)memBlocks[0].size());
-  if( amountOfBlocksNeeded )
+  if( amountOfBlocksNeeded == 0)
       return flag;
   
   Block** blocksToAttach = new Block*[amountOfBlocksNeeded];
 
-  if( m_FreeBlocksIndex.size() ) 
+  if( m_FreeBlocksIndex.size() < amountOfBlocksNeeded) 
     return flag;
   
   // Join block to INode 
@@ -126,7 +126,8 @@ bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
       blocksToAttach[i] = &(memBlocks[blockAddress]);
   } 
 
-  node->InsertBlocks(blocksToAttach, amountOfBlocksNeeded); 
+  flag = node->InsertBlocks(blocksToAttach, amountOfBlocksNeeded); 
+
   
   // clean temp array
   for(int i = 0; i < amountOfBlocksNeeded; i++)
@@ -140,6 +141,25 @@ bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)
 
 }
 
+Block** MemBlockDevice::CopyBlocks(BlockHandle* blockHandleRoot, int nrOfBlocks)
+{
+    Block** copiedBlocks = new Block*[nrOfBlocks];
+
+    BlockHandle* current = blockHandleRoot;
+    
+    for(int i = 0; i < nrOfBlocks; i++)
+    {
+        int blockAddress = m_FreeBlocksIndex.back();
+        m_FreeBlocksIndex.pop_back;
+        copiedBlocks[i] = &(memBlocks[blocksAddress]);
+        // copy content from old blockptrptr 
+        **(copiedBlocks[i]) = current->m_thisBlock.GetBlock(); // debug me please!
+        current = current->m_nextHandle;
+    }
+    
+    return copiedBlocks;
+}
+
 void MemBlockDevice::Clean()
 {
     m_FreeBlocksIndex.clear();
@@ -149,7 +169,7 @@ void MemBlockDevice::Clean()
 
 
 void MemBlockDevice::Destroy()
-{
+
 }
 
 
