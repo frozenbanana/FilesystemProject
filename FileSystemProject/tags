@@ -1,0 +1,165 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AddNode	src/DirectoryManager.cpp	/^void DirectoryManager::AddNode(std::string fullpath, DnodeData data) {$/;"	f	class:DirectoryManager
+AddNode	src/DirectoryManager.cpp	/^void Dnode::AddNode(std::string fullpath, DnodeData data) {$/;"	f	class:Dnode
+BINFOLDER	Makefile	/^BINFOLDER=bin$/;"	m
+BLOCKDEVICE_H	src/blockdevice.h	2;"	d
+BLOCKNR	test/memBlockTest.cpp	/^const int BLOCKNR = 250;$/;"	v
+BLOCK_H	src/block.h	2;"	d
+Block	src/block.cpp	/^Block::Block(const Block &other) {$/;"	f	class:Block
+Block	src/block.cpp	/^Block::Block(int size) {$/;"	f	class:Block
+Block	src/block.h	/^class Block$/;"	c
+BlockDevice	src/blockdevice.cpp	/^    BlockDevice::BlockDevice(const BlockDevice &other) {$/;"	f	class:BlockDevice
+BlockDevice	src/blockdevice.cpp	/^    BlockDevice::BlockDevice(int nrOfBlocks) {$/;"	f	class:BlockDevice
+BlockDevice	src/blockdevice.h	/^class BlockDevice$/;"	c
+BlockHandle	src/INode.cpp	/^BlockHandle::BlockHandle()$/;"	f	class:BlockHandle
+BlockHandle	src/INode.h	/^class BlockHandle$/;"	c
+CFLAGS	Makefile	/^CFLAGS=-Wall -O2 -std=c++11$/;"	m
+CPP_FILES	Makefile	/^CPP_FILES = $(filter-out $(SRCFOLDER)\/shell.cpp, $(wildcard $(SRCFOLDER)\/*.cpp))$/;"	m
+CalculatePathLength	src/DirectoryManager.cpp	/^int DirectoryManager::CalculatePathLength(std::string entirePath)$/;"	f	class:DirectoryManager
+Clean	src/memblockdevice.cpp	/^void MemBlockDevice::Clean()$/;"	f	class:MemBlockDevice
+CleanAll	src/DirectoryManager.cpp	/^void DirectoryManager::CleanAll()$/;"	f	class:DirectoryManager
+CleanAll	src/INode.cpp	/^void INode::CleanAll()$/;"	f	class:INode
+CleanAll	src/filesystem.cpp	/^void FileSystem::CleanAll() {$/;"	f	class:FileSystem
+CleanDirectory	src/DirectoryManager.cpp	/^void Dnode::CleanDirectory() {$/;"	f	class:Dnode
+CleanFile	src/DirectoryManager.cpp	/^void Dnode::CleanFile() {$/;"	f	class:Dnode
+CleanNextHandle	src/INode.cpp	/^void INode::CleanNextHandle(BlockHandle *BlockHandle_in)$/;"	f	class:INode
+Copy	src/filesystem.cpp	/^void FileSystem::Copy(std::string originalFilePath, std::string newFilePath) {$/;"	f	class:FileSystem
+Create	src/filesystem.cpp	/^void FileSystem::Create(std::string fullpath \/* Also needs the raw file-data*\/) {$/;"	f	class:FileSystem
+CreateImage	src/filesystem.cpp	/^void FileSystem::CreateImage() {$/;"	f	class:FileSystem
+DIRECTORYMANAGER_HPP	src/DirectoryManager.hpp	2;"	d
+Destroy	src/memblockdevice.cpp	/^void MemBlockDevice::Destroy()$/;"	f	class:MemBlockDevice
+Directory	src/Directory.h	/^class Directory$/;"	c
+DirectoryManager	src/DirectoryManager.cpp	/^DirectoryManager::DirectoryManager()$/;"	f	class:DirectoryManager
+DirectoryManager	src/DirectoryManager.hpp	/^class DirectoryManager {$/;"	c
+Dnode	src/DirectoryManager.cpp	/^Dnode::Dnode() {$/;"	f	class:Dnode
+Dnode	src/DirectoryManager.cpp	/^Dnode::Dnode(DnodeData data, Dnode* parent) {$/;"	f	class:Dnode
+Dnode	src/DirectoryManager.hpp	/^class Dnode {$/;"	c
+DnodeData	src/DirectoryManager.hpp	/^struct DnodeData { \/\/ The data for a Dnode, so that creating one is easier.$/;"	s
+ExtendList	src/INode.cpp	/^void INode::ExtendList(BlockHandle* rootHandle_in, int blockCount_in)$/;"	f	class:INode
+FILESYSTEM_HPP	src/FileSystem.hpp	2;"	d
+FetchCurrentDirInfo	src/DirectoryManager.cpp	/^std::string DirectoryManager::FetchCurrentDirInfo()$/;"	f	class:DirectoryManager
+FileSystem	src/FileSystem.hpp	/^class FileSystem {$/;"	c
+FileSystem	src/filesystem.cpp	/^FileSystem::FileSystem() {$/;"	f	class:FileSystem
+Format	src/filesystem.cpp	/^void FileSystem::Format() {$/;"	f	class:FileSystem
+GetBlock	src/INode.cpp	/^Block* BlockHandle::GetBlock()$/;"	f	class:BlockHandle
+INODE_COUNT	src/INodeManager.h	10;"	d
+INODE_H	src/INode.h	5;"	d
+INODE_MANAGER_H	src/INodeManager.h	2;"	d
+INode	src/INode.cpp	/^INode::INode()$/;"	f	class:INode
+INode	src/INode.cpp	/^INode::INode(bool isDirectory_in, bool *permissionData_in)$/;"	f	class:INode
+INode	src/INode.h	/^class INode$/;"	c
+INodeManager	src/INodeManager.cpp	/^INodeManager::INodeManager()$/;"	f	class:INodeManager
+INodeManager	src/INodeManager.h	/^class INodeManager$/;"	c
+Initialize	src/filesystem.cpp	/^void FileSystem::Initialize() {$/;"	f	class:FileSystem
+Inode	src/DirectoryManager.hpp	/^struct Inode {$/;"	s
+InsertBlocks	src/INode.cpp	/^bool INode::InsertBlocks(Block* *BlockArray_in, int BlockCount_in)$/;"	f	class:INode
+InsertList	src/INode.cpp	/^void INode::InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int BlockCount_in)$/;"	f	class:INode
+JoinBlocksToINode	src/memblockdevice.cpp	/^bool MemBlockDevice::JoinBlocksToINode(INode* node, int fileSize)$/;"	f	class:MemBlockDevice
+MAXCOMMANDS	src/shell.cpp	/^const int MAXCOMMANDS = 8;$/;"	v
+MEMBLOCKDEVICE_H	src/memblockdevice.h	2;"	d
+MakeDirectory	src/filesystem.cpp	/^void FileSystem::MakeDirectory(std::string fullpath) {$/;"	f	class:FileSystem
+MemBlockDevice	src/memblockdevice.cpp	/^MemBlockDevice::MemBlockDevice(const MemBlockDevice &other) : BlockDevice(other) $/;"	f	class:MemBlockDevice
+MemBlockDevice	src/memblockdevice.cpp	/^MemBlockDevice::MemBlockDevice(int nrOfBlocks): BlockDevice(nrOfBlocks)$/;"	f	class:MemBlockDevice
+MemBlockDevice	src/memblockdevice.h	/^class MemBlockDevice: public BlockDevice$/;"	c
+NUMAVAILABLECOMMANDS	src/shell.cpp	/^const int NUMAVAILABLECOMMANDS = 15;$/;"	v
+OBJ_FILES	Makefile	/^OBJ_FILES = $(addprefix $(BINFOLDER)\/, $(notdir $(CPP_FILES:.cpp=.o)))$/;"	m
+OutputData	src/DirectoryManager.cpp	/^std::string Dnode::OutputData() {$/;"	f	class:Dnode
+PopFreeINode	src/INodeManager.cpp	/^INode* INodeManager::PopFreeINode()$/;"	f	class:INodeManager
+PushFreeINode	src/INodeManager.cpp	/^bool INodeManager::PushFreeINode(INode* INode_in)$/;"	f	class:INodeManager
+Quit	src/filesystem.cpp	/^void FileSystem::Quit() {$/;"	f	class:FileSystem
+ReclaimBlock	src/memblockdevice.cpp	/^void MemBlockDevice::ReclaimBlock(int blockIndex)$/;"	f	class:MemBlockDevice
+Remove	src/filesystem.cpp	/^void FileSystem::Remove(std::string filePath) {$/;"	f	class:FileSystem
+RemoveChildNode	src/DirectoryManager.cpp	/^void Dnode::RemoveChildNode(std::string name) {$/;"	f	class:Dnode
+RemoveNode	src/DirectoryManager.cpp	/^void DirectoryManager::RemoveNode(std::string fullpath) {$/;"	f	class:DirectoryManager
+RestoreImage	src/filesystem.cpp	/^void FileSystem::RestoreImage() {$/;"	f	class:FileSystem
+SIZE	test/blockTest.cpp	/^const int SIZE = 512;$/;"	v
+SIZE	test/memBlockTest.cpp	/^const int SIZE = 512;$/;"	v
+SRCFOLDER	Makefile	/^SRCFOLDER=src$/;"	m
+SetBlock	src/INode.cpp	/^void BlockHandle::SetBlock(Block* dataBlock_in)$/;"	f	class:BlockHandle
+SplitAPath	src/DirectoryManager.cpp	/^void DirectoryManager::SplitAPath(std::string source, std::string* destination[]) {$/;"	f	class:DirectoryManager
+StartStepping	src/DirectoryManager.cpp	/^Dnode* DirectoryManager::StartStepping(std::string splitPath[], int pathSize) {$/;"	f	class:DirectoryManager
+Step	src/DirectoryManager.cpp	/^Dnode* Dnode::Step(std::string splitPath[], int depthLeft) {$/;"	f	class:Dnode
+SwitchCurrentDirectory	src/DirectoryManager.cpp	/^std::string DirectoryManager::SwitchCurrentDirectory(std::string directoryPath)$/;"	f	class:DirectoryManager
+TESTFLAG	Makefile	/^TESTFLAG=-I $(SRCFOLDER)\/$/;"	m
+availableCommands	src/shell.cpp	/^std::string availableCommands[NUMAVAILABLECOMMANDS] = {$/;"	v
+block	src/block.h	/^    char *block;$/;"	m	class:Block
+cat	src/filesystem.cpp	/^std::string FileSystem::cat(std::string filePath) {$/;"	f	class:FileSystem
+cd	src/filesystem.cpp	/^std::string FileSystem::cd(std::string filePath) {$/;"	f	class:FileSystem
+currentDirectory	src/DirectoryManager.hpp	/^	Dnode* currentDirectory;	\/\/ The directory the user is currently looking at.$/;"	m	class:DirectoryManager
+data	src/DirectoryManager.hpp	/^	DnodeData data;$/;"	m	class:Dnode
+dirPath	src/DirectoryManager.hpp	/^	std::string dirPath;$/;"	m	struct:DnodeData
+fileChildren	src/DirectoryManager.hpp	/^struct fileChildren { \/\/ Linked list of all the files in a folder$/;"	s
+findCommand	src/shell.cpp	/^int findCommand(std::string &command) {$/;"	f
+folder	src/DirectoryManager.hpp	/^	bool folder = false;$/;"	m	struct:DnodeData
+folderChildren	src/DirectoryManager.hpp	/^struct folderChildren { \/\/ Linked list of all the folders in a folder$/;"	s
+help	src/shell.cpp	/^std::string help() {$/;"	f
+inodePointer	src/DirectoryManager.hpp	/^	Inode* inodePointer = nullptr;$/;"	m	struct:DnodeData
+ls	src/filesystem.cpp	/^std::string FileSystem::ls() {$/;"	f	class:FileSystem
+m_DirectoryManager	src/FileSystem.hpp	/^	DirectoryManager m_DirectoryManager;$/;"	m	class:FileSystem
+m_FreeBlocksIndex	src/memblockdevice.h	/^    std::list<int> m_FreeBlocksIndex;$/;"	m	class:MemBlockDevice
+m_FreeINodeCount	src/INodeManager.h	/^	int			m_FreeINodeCount = INODE_COUNT;	\/\/ Current # of free INodes$/;"	m	class:INodeManager
+m_FreeINodeList	src/INodeManager.h	/^	INode*		m_FreeINodeList[INODE_COUNT];	\/\/ Static list of all FREE INodes$/;"	m	class:INodeManager
+m_INodeList	src/INodeManager.h	/^	INode		m_INodeList[INODE_COUNT];		\/\/ Static list of ALL INodes$/;"	m	class:INodeManager
+m_freeSpaceStart	src/blockdevice.h	/^    int m_freeSpaceStart;$/;"	m	class:BlockDevice
+m_isDirectory	src/INode.h	/^    bool	      			m_isDirectory;$/;"	m	class:INode
+m_nextHandle	src/INode.h	/^    BlockHandle         *m_nextHandle; \/\/ Public in-case someone else needs to 'step'$/;"	m	class:BlockHandle
+m_permissionData	src/INode.h	/^    bool			      	m_permissionData[10];$/;"	m	class:INode
+m_rootHandle	src/INode.h	/^    BlockHandle   		m_rootHandle;     \/\/ rootHandle public to gain access$/;"	m	class:INode
+m_thisBlock	src/INode.h	/^    Block		*m_thisBlock;$/;"	m	class:BlockHandle
+main	src/main.cpp	/^int main()$/;"	f
+main	src/shell.cpp	/^int main(void) {$/;"	f
+main	test/blockTest.cpp	/^int main(void) {$/;"	f
+main	test/memBlockTest.cpp	/^int main(void) {$/;"	f
+me	src/DirectoryManager.hpp	/^	Dnode* me = nullptr;$/;"	m	struct:fileChildren
+me	src/DirectoryManager.hpp	/^	Dnode* me = nullptr;$/;"	m	struct:folderChildren
+memBlocks	src/blockdevice.h	/^    Block* memBlocks;$/;"	m	class:BlockDevice
+name	src/DirectoryManager.hpp	/^	std::string name;$/;"	m	struct:DnodeData
+next	src/DirectoryManager.hpp	/^	fileChildren* next = nullptr;$/;"	m	struct:fileChildren
+next	src/DirectoryManager.hpp	/^	folderChildren* next = nullptr;$/;"	m	struct:folderChildren
+nrOfBlocks	src/blockdevice.h	/^    int nrOfBlocks;$/;"	m	class:BlockDevice
+nrOfElements	src/block.h	/^    int nrOfElements;$/;"	m	class:Block
+operator <<	src/block.h	/^    friend std::ostream& operator<<(std::ostream &os, const Block& blck)$/;"	f	class:Block
+operator =	src/block.cpp	/^Block &Block::operator =(const Block &other) {$/;"	f	class:Block
+operator =	src/memblockdevice.cpp	/^MemBlockDevice& MemBlockDevice::operator=(const MemBlockDevice &other) $/;"	f	class:MemBlockDevice
+operator []	src/block.cpp	/^char Block::operator[](int index) const {$/;"	f	class:Block
+operator []	src/memblockdevice.cpp	/^Block& MemBlockDevice::operator[](int index) const $/;"	f	class:MemBlockDevice
+parent	src/DirectoryManager.hpp	/^	Dnode* parent = nullptr;$/;"	m	class:Dnode
+parseCommandString	src/shell.cpp	/^int parseCommandString(const std::string &userCommand, std::string strArr[]) {$/;"	f
+pfilesLinkedList	src/DirectoryManager.hpp	/^	fileChildren* pfilesLinkedList = nullptr;$/;"	m	class:Dnode
+pfoldersLinkedList	src/DirectoryManager.hpp	/^	folderChildren* pfoldersLinkedList = nullptr;$/;"	m	class:Dnode
+previous	src/DirectoryManager.hpp	/^	fileChildren* previous = nullptr;$/;"	m	struct:fileChildren
+previous	src/DirectoryManager.hpp	/^	folderChildren* previous = nullptr;$/;"	m	struct:folderChildren
+pwd	src/filesystem.cpp	/^std::string FileSystem::pwd(std::string filePath) {$/;"	f	class:FileSystem
+quit	src/shell.cpp	/^bool quit() {$/;"	f
+readBlock	src/block.cpp	/^Block Block::readBlock() const {$/;"	f	class:Block
+readBlock	src/memblockdevice.cpp	/^Block MemBlockDevice::readBlock(int blockNr) const {$/;"	f	class:MemBlockDevice
+reset	src/block.cpp	/^void Block::reset(char c) {$/;"	f	class:Block
+reset	src/memblockdevice.cpp	/^void MemBlockDevice::reset() {$/;"	f	class:MemBlockDevice
+rootNode	src/DirectoryManager.hpp	/^	Dnode rootNode;$/;"	m	class:DirectoryManager
+sampledata	src/DirectoryManager.hpp	/^	int sampledata;$/;"	m	struct:Inode
+size	src/block.cpp	/^int Block::size() const {$/;"	f	class:Block
+size	src/memblockdevice.cpp	/^int MemBlockDevice::size() const {$/;"	f	class:MemBlockDevice
+spaceLeft	src/memblockdevice.cpp	/^int MemBlockDevice::spaceLeft() const $/;"	f	class:MemBlockDevice
+stepToLast	src/DirectoryManager.hpp	/^	fileChildren* stepToLast() {$/;"	f	struct:fileChildren
+stepToLast	src/DirectoryManager.hpp	/^	folderChildren* stepToLast() {$/;"	f	struct:folderChildren
+toString	src/block.cpp	/^std::string Block::toString() const {$/;"	f	class:Block
+writeBlock	src/block.cpp	/^int Block::writeBlock(const std::string &strBlock) {$/;"	f	class:Block
+writeBlock	src/block.cpp	/^int Block::writeBlock(const std::vector<char> &vec) {$/;"	f	class:Block
+writeBlock	src/block.cpp	/^void Block::writeBlock(const char cArr[]) {$/;"	f	class:Block
+writeBlock	src/memblockdevice.cpp	/^int MemBlockDevice::writeBlock(int blockNr, const char cArr[]) $/;"	f	class:MemBlockDevice
+writeBlock	src/memblockdevice.cpp	/^int MemBlockDevice::writeBlock(int blockNr, const std::string &strBlock) $/;"	f	class:MemBlockDevice
+writeBlock	src/memblockdevice.cpp	/^int MemBlockDevice::writeBlock(int blockNr, const std::vector<char> &vec) {$/;"	f	class:MemBlockDevice
+~Block	src/block.cpp	/^Block::~Block() {$/;"	f	class:Block
+~BlockDevice	src/blockdevice.cpp	/^    BlockDevice::~BlockDevice() {$/;"	f	class:BlockDevice
+~BlockHandle	src/INode.cpp	/^BlockHandle::~BlockHandle()$/;"	f	class:BlockHandle
+~DirectoryManager	src/DirectoryManager.cpp	/^DirectoryManager::~DirectoryManager()$/;"	f	class:DirectoryManager
+~Dnode	src/DirectoryManager.cpp	/^Dnode::~Dnode() {$/;"	f	class:Dnode
+~FileSystem	src/filesystem.cpp	/^FileSystem::~FileSystem() {$/;"	f	class:FileSystem
+~INode	src/INode.cpp	/^INode::~INode()$/;"	f	class:INode
+~INodeManager	src/INodeManager.cpp	/^INodeManager::~INodeManager()$/;"	f	class:INodeManager
+~MemBlockDevice	src/memblockdevice.cpp	/^MemBlockDevice::~MemBlockDevice() {$/;"	f	class:MemBlockDevice

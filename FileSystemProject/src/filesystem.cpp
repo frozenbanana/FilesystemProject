@@ -41,6 +41,7 @@ void FileSystem::Create(std::string fullpath, std::string fileData) {
 
 	// Parse fileData according to ELEMENTSPERBLOCK
 	int length = fileData.length();
+
 	int blockCount = ((ELEMENTSPERBLOCK-1 + length) / ELEMENTSPERBLOCK);
 	char** doubleArray = new char*[length];
 

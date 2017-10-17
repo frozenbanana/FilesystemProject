@@ -39,6 +39,7 @@ int main(void) {
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "Pr0n@DV1337";    // Change this if you want another user to be displayed
+
 	std::string currentDir = "root";	// current directory, used for output
 
 	bool bRun = true;
@@ -50,7 +51,7 @@ int main(void) {
 		int nrOfCommands = parseCommandString(userCommand, commandArr);
 
 		if (nrOfCommands > 1) { // Forces "/" to become "root/"
-			
+
 			if (commandArr[1].at(0) != '/') { 
 				thatsCheating = "";
 				thatsCheating.append(currentDir);
