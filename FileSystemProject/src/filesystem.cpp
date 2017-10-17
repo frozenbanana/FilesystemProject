@@ -41,34 +41,55 @@ void FileSystem::Create(std::string fullpath, std::string fileData) {
 
 	// Parse fileData according to ELEMENTSPERBLOCK
 	int length = fileData.length();
-	int blockCount = length / ELEMENTSPERBLOCK;
+
+	int blockCount = ((ELEMENTSPERBLOCK-1 + length) / ELEMENTSPERBLOCK);
 	char** doubleArray = new char*[length];
 
-	
 	BlockHandle* stepper = &InodePointer->m_rootHandle;
+	
+	if (blockCount > 1) {
 
-	// Per Block
-	for (int i = 0; i < blockCount; i++) {
-		doubleArray[i] = new char[ELEMENTSPERBLOCK];
+		// Handle the first->secondlast blocks normally.
+		for (int i = 0; i < blockCount - 1; i++) {
+			doubleArray[i] = new char[ELEMENTSPERBLOCK];
 
-		// Per character inside a block
-		for (int j = 0; j < ELEMENTSPERBLOCK; j++) {
-			//temp = fileData.at(i * j);
-			doubleArray[i][j] = fileData.at((i*ELEMENTSPERBLOCK) + j);
-			
+			// Per character inside a block
+			for (int j = 0; j < ELEMENTSPERBLOCK; j++) {
+				//temp = fileData.at(i * j);
+				doubleArray[i][j] = fileData.at((i*ELEMENTSPERBLOCK) + j);
+			}
+
+			stepper->GetBlock()->writeBlock(doubleArray[i], ELEMENTSPERBLOCK);
+			stepper = stepper->m_nextHandle;
 		}
 
-		stepper->GetBlock()->writeBlock(doubleArray[i]);
-		stepper = stepper->m_nextHandle;
+		// Handle the last block specifically, since we don't want to write 512 chars here
+		doubleArray[blockCount - 1] = new char[ELEMENTSPERBLOCK];
+		fileData = fileData.substr(((blockCount - 1)*ELEMENTSPERBLOCK), std::string::npos);
+		length = fileData.length();
+
+		for (int i = 0; i < length; i++) {
+
+			doubleArray[blockCount - 1][i] = fileData.at(i);
+		}
+
+		stepper->GetBlock()->writeBlock(doubleArray[blockCount - 1], length);
+		
+				
+	}
+	else {
+		// Handle the only block specifically, since we don't want to write 512 chars here
+		doubleArray[0] = new char[ELEMENTSPERBLOCK];
+		fileData = fileData.substr(((blockCount - 1)*ELEMENTSPERBLOCK), std::string::npos);
+		length = fileData.length();
+		for (int i = 0; i < length; i++) {
+
+			doubleArray[0][i] = fileData.at(i);
+		}
+		
+		stepper->GetBlock()->writeBlock(doubleArray[0], length);
 	}
 
-
-	
-
-
-	
-
-	// InodePoitner->WriteBlock(fileData), <- ska dela upp i mindre getBlock()->writeBlocks()
 
 	/* Attach the Inodepointer to a Dnode */
 	DnodeData data;
@@ -94,7 +115,7 @@ void FileSystem::MakeDirectory(std::string fullpath) {
 	data.folder = true;
 	data.inodePointer = &InodePointer;
 
-	/* Attatch the node to the Directory-Tree */
+	/* Attach the node to the Directory-Tree */
 	m_DirectoryManager.AddNode(fullpath, data);
 }
 void FileSystem::Copy(std::string originalFilePath, std::string newFilePath) {
@@ -115,6 +136,12 @@ void FileSystem::Copy(std::string originalFilePath, std::string newFilePath) {
 
 	// Attach the given array to the new Inode
 	newINodePointer->InsertBlocks(newBlockArray, triangleSize);
+
+	// Attach Inode to a Dnode
+	DnodeData data;
+	data.inodePointer = newINodePointer;
+	data.folder = false;
+	this->m_DirectoryManager.AddNode(newFilePath, data);
 
 	delete[] newBlockArray;
 	delete[] originalSplitPath;
@@ -177,10 +204,26 @@ std::string FileSystem::cat(std::string filePath) {
 	int length = m_DirectoryManager.CalculatePathLength(filePath);
 	m_DirectoryManager.SplitAPath(filePath, &splitPath);
 
-	return m_DirectoryManager.StartStepping(splitPath, length)->OutputData();
+	Dnode* DnodePointer = m_DirectoryManager.StartStepping(splitPath, length);
+	BlockHandle* stepper = &DnodePointer->data.inodePointer->m_rootHandle;
+	std::string returnData;
+	returnData.append("\n");
+	while (stepper != nullptr) {
+		std::string temp = stepper->GetBlock()->toString();
+		returnData.append(temp);
+		stepper = stepper->m_nextHandle;
+	}
+	returnData.append("\n");
+	
+	delete[] splitPath;
+	return returnData;
 }
 std::string FileSystem::pwd(std::string filePath) {
 	std::string returnData;
+
+	returnData.append("\n");
+	returnData.append(this->m_DirectoryManager.currentDirectory->data.dirPath);
+	returnData.append("\n\n");
 
 	return returnData;
 }

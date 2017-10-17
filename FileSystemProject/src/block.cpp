@@ -85,8 +85,9 @@ int Block::writeBlock(const std::vector<char> &vec) {
     return output;
 }
 
-void Block::writeBlock(const char cArr[]) {
-    for (int i = 0; i < this->nrOfElements; ++i) {
+void Block::writeBlock(const char cArr[], int size) {
+	this->nrOfElements = size;
+	for (int i = 0; i < this->nrOfElements; ++i) {
         this->block[i] = cArr[i];
     }
 }

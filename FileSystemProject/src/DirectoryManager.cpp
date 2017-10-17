@@ -27,7 +27,6 @@ void Dnode::CleanFile() {
 }
 
 std::string Dnode::OutputData() {
-
 	/*
 	Praktiskt onödig.
 	*/
@@ -473,6 +472,7 @@ std::string DirectoryManager::SwitchCurrentDirectory(std::string directoryPath)
 
 	this->currentDirectory = this->StartStepping(splitPath, pathSize);
 	
+	delete[] splitPath;
 	return this->currentDirectory->data.dirPath;
 }
 
