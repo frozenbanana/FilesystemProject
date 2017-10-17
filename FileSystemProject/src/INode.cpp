@@ -1,27 +1,29 @@
 #include "INode.h"
 
+
 // PUBLIC FUNCTIONS
 
-DataBlockHandle::DataBlockHandle()
+BlockHandle::BlockHandle()
 {
-  m_thisDataBlock = nullptr;
-  m_nextDataHandle = nullptr;
+  m_thisBlock = nullptr;
+  m_nextHandle = nullptr;
 }
 
-DataBlockHandle::~DataBlockHandle()
+BlockHandle::~BlockHandle()
 {
 
 }
 
-int* DataBlockHandle::GetDataBlock()
+Block* BlockHandle::GetBlock()
 {
-	return m_thisDataBlock;
+	return m_thisBlock;
 }
 
-void DataBlockHandle::SetDataBlock(int *dataBlock_in)
+void BlockHandle::SetBlock(Block* dataBlock_in)
 {
-	m_thisDataBlock = dataBlock_in;
+	m_thisBlock = dataBlock_in;
 }
+
 
 
 
@@ -35,24 +37,86 @@ void DataBlockHandle::SetDataBlock(int *dataBlock_in)
 /*- - - - - FUNCTION COMMENTS - - - - -
 Makes use of two clean functions
  • CleanAll() gives initial access to root
- • CleanNextDataHandle recursively deletes all past root*/
+ • CleanNextHandle() recursively deletes all past root*/
 void INode::CleanAll()
 {
-	if (m_rootDataHandle.m_nextDataHandle != nullptr)
-		m_CleanNextDataHandle(m_rootDataHandle.m_nextDataHandle);
+	if (m_rootHandle.m_nextHandle != nullptr)
+		CleanNextHandle(m_rootHandle.m_nextHandle);
 
 	// No 'delete' due to static root
 }
 
 /*- - - - FUNCTION COMMENTS - - - - -
 See 'Function Comments' for 'CleanAll() function*/
-void INode::m_CleanNextDataHandle(DataBlockHandle *DataBlockHandle_in)
+void INode::CleanNextHandle(BlockHandle *BlockHandle_in)
 {
-  if (DataBlockHandle_in->m_nextDataHandle != nullptr)
-	  m_CleanNextDataHandle(DataBlockHandle_in->m_nextDataHandle);
+  if (BlockHandle_in->m_nextHandle != nullptr)
+	  CleanNextHandle(BlockHandle_in->m_nextHandle);  // Recursive func. call
 
-  delete DataBlockHandle_in;	// Recursively calling this function down until,
-}								// but not including, the root.
+  delete BlockHandle_in;	// Deleting self AFTER having called recursion
+}								
+
+
+void INode::ExtendList(BlockHandle* rootHandle_in, int blockCount_in)
+{
+  BlockHandle *tempHandle = rootHandle_in;  // Initially set to rootHandle (necc. for both cases below)
+
+  if (tempHandle->GetBlock() != nullptr) // Safety net in case we're adding MORE blocks
+  {
+    while (tempHandle->m_nextHandle != nullptr) // Stepping through existing handles
+      tempHandle = tempHandle->m_nextHandle;
+  
+    for (int i = 0; i < blockCount_in; i++) // Extension may begin here (see above 2 comments)
+    {
+      tempHandle->m_nextHandle = new BlockHandle;
+      tempHandle = tempHandle->m_nextHandle;
+    }
+  }
+
+  else  // rootHandle is empty = standard proceeding
+  {
+    for (int i = 0; i < (blockCount_in - 1); i++)
+    {
+      tempHandle->m_nextHandle = new BlockHandle;
+      tempHandle = tempHandle->m_nextHandle;
+    }
+  }
+}
+
+
+void INode::InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int BlockCount_in)
+{
+   BlockHandle *tempHandle = rootHandle_in;
+
+   int         blocksLeft = BlockCount_in;
+   int         currentArraySlot = 0;  // Not necessary, but increases clarity
+
+   if (tempHandle->GetBlock() != nullptr) // rootHandle already contains data!!
+   {
+     tempHandle = tempHandle->m_nextHandle;
+
+     while (tempHandle->GetBlock() != nullptr) // Stepping till handle with empty Block
+       tempHandle = tempHandle->m_nextHandle;
+   }
+
+   else // rootHandle contained no data = fill root, then proceed
+   {
+     tempHandle->SetBlock(BlockArray_in[currentArraySlot]);
+     currentArraySlot++;
+     blocksLeft--;
+
+	 tempHandle = tempHandle->m_nextHandle;
+   }
+
+   while (blocksLeft > 0)
+   {
+     tempHandle->SetBlock(BlockArray_in[currentArraySlot]);
+     currentArraySlot++;
+     blocksLeft--; 
+	 tempHandle = tempHandle->m_nextHandle;
+   }
+}
+
 
 
 
@@ -75,27 +139,42 @@ INode::INode(bool isDirectory_in, bool *permissionData_in)
     m_permissionData[i] = permissionData_in[i];
 }
 
-
-
 INode::~INode()
 {
-
+  CleanAll(); 
 }
 
 
-DataBlockHandle* INode::ExtendHandleList()
+bool INode::InsertBlocks(Block* *BlockArray_in, int BlockCount_in)
 {
-	DataBlockHandle *tempHandle;
+    // Return Bool to check success
+  BlockHandle *tempHandle;
+  bool        booleanReturnValue = true;
 
-	if (m_rootDataHandle.m_nextDataHandle != nullptr)
+  ExtendList(&m_rootHandle, BlockCount_in);
+  
+  InsertList(&m_rootHandle, BlockArray_in, BlockCount_in);
+
+	return booleanReturnValue;
+}
+
+int INode::GetSize()
+{
+	int temp_intHolder = 0;
+	BlockHandle	*temp_HandleHolder = &m_rootHandle;
+
+	if (temp_HandleHolder->GetBlock() != nullptr)
 	{
-		tempHandle = m_rootDataHandle.m_nextDataHandle;
+		while (temp_HandleHolder != nullptr)
+		{
+			temp_intHolder++;
+			temp_HandleHolder = temp_HandleHolder->m_nextHandle;
+		}
 
-		while (tempHandle->m_nextDataHandle != nullptr)
-			tempHandle = tempHandle->m_nextDataHandle;
-
-		tempHandle->m_nextDataHandle = new DataBlockHandle;
+		return temp_intHolder;
 	}
 
-	return tempHandle->m_nextDataHandle;
+	else
+		return 0;
 }
+

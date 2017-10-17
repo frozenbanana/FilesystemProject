@@ -27,7 +27,6 @@ void Dnode::CleanFile() {
 }
 
 std::string Dnode::OutputData() {
-
 	/*
 	Praktiskt onödig.
 	*/
@@ -99,6 +98,27 @@ Dnode* Dnode::Step(std::string splitPath[], int depthLeft) {
 
 		}
 
+		/* Check the folders */
+		if (fileStepper != nullptr) { // i contain atleast 1 file
+
+			// Is it the first one?
+			if (fileStepper->me->data.name == splitPath[depthLeft - 2]) {	// '-2' because we're ignoring 'root' AND converting count->arr
+
+				return fileStepper->me->Step(splitPath, (depthLeft - 1));
+			}
+
+			// Step through the rest of the folders and check'em
+			while (fileStepper->next != nullptr) {
+				fileStepper = fileStepper->next;
+
+				if (fileStepper->me->data.name == splitPath[depthLeft - 2]) { // '-2' because we're ignoring 'root' AND converting count->arr
+																				// Keep going down
+					return fileStepper->me->Step(splitPath, (depthLeft - 1));
+				}
+
+			}
+
+		}
 
 	}
 	/*  The file/folder we're looking for is one of the children */
@@ -452,6 +472,7 @@ std::string DirectoryManager::SwitchCurrentDirectory(std::string directoryPath)
 
 	this->currentDirectory = this->StartStepping(splitPath, pathSize);
 	
+	delete[] splitPath;
 	return this->currentDirectory->data.dirPath;
 }
 
@@ -461,7 +482,6 @@ void DirectoryManager::SplitAPath(std::string source, std::string* destination[]
 	std::string delimiter = "/";
 	int pathLength = this->CalculatePathLength(source);
 	int i = pathLength; // last->first so that it's formatted for stepping.
-
 
 	if (pathLength > 1) {	// Bigger than ex: "root"
 

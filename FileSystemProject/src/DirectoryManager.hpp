@@ -2,6 +2,7 @@
 #define DIRECTORYMANAGER_HPP
 
 #include <string>
+#include "INode.h"
 
 /*
 
@@ -13,15 +14,11 @@ Fixa Dnode::AddNode() så att den lägger till dirPath i Children's me.data.dirPat
 
 class Dnode;	// Forward deklarerad pga file/folder-Children
 
-struct Inode {
-	int sampledata;
-};
-
 struct DnodeData { // The data for a Dnode, so that creating one is easier.
 	std::string name;
 	std::string dirPath;
 	bool folder = false;
-	Inode* inodePointer = nullptr;
+	INode* inodePointer = nullptr;
 };
 
 struct fileChildren { // Linked list of all the files in a folder

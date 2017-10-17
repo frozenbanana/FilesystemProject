@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#define ELEMENTSPERBLOCK 512
+
 class Block
 {
 private:
@@ -13,7 +15,7 @@ private:
 
 public:
     /* Constructor */
-    Block(int nrOfElements = 512);    // overloaded (default) constructor
+    Block(int nrOfElements = ELEMENTSPERBLOCK);    // overloaded (default) constructor
     Block(const Block &other); // copy-constructor
 
     /* Destructor */
@@ -36,7 +38,7 @@ public:
     /* Write a block */
     int writeBlock(const std::string &strBlock);
     int writeBlock(const std::vector<char> &vec);
-    void writeBlock(const char cArr[]);     // Use with caution! Make sure that cArr is at least as large as private member block.
+    void writeBlock(const char cArr[], int size);     // Use with caution! Make sure that cArr is at least as large as private member block.
 
     std::string toString() const;
 };

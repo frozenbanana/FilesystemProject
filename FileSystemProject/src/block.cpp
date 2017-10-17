@@ -1,13 +1,12 @@
 #include "block.h"
 #include <stdexcept>
 
-
 Block::Block(int size) {
     /* Setting size */
     if (size > 0)
         this->nrOfElements = size;
     else
-        this->nrOfElements = 512;
+        this->nrOfElements = ELEMENTSPERBLOCK;
 
     this->block = new char[this->nrOfElements];
 
@@ -23,7 +22,8 @@ Block::Block(const Block &other) {
 }
 
 Block::~Block() {
-    delete [] this->block;
+	if (this->block != nullptr) 
+		delete [] this->block;
 }
 
 Block &Block::operator =(const Block &other) {
@@ -59,6 +59,8 @@ Block Block::readBlock() const {
 
 int Block::writeBlock(const std::string &strBlock) {
     int output = -2;    // Assume out of range
+	this->nrOfElements = strBlock.length();
+
     if (strBlock.size() == (unsigned long)this->nrOfElements) {
         for (int i = 0; i < this->nrOfElements; ++i) {
             this->block[i] = strBlock[i];
@@ -83,8 +85,9 @@ int Block::writeBlock(const std::vector<char> &vec) {
     return output;
 }
 
-void Block::writeBlock(const char cArr[]) {
-    for (int i = 0; i < this->nrOfElements; ++i) {
+void Block::writeBlock(const char cArr[], int size) {
+	this->nrOfElements = size;
+	for (int i = 0; i < this->nrOfElements; ++i) {
         this->block[i] = cArr[i];
     }
 }

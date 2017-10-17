@@ -9,6 +9,7 @@
 
 */
 
+
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 15;
 
@@ -31,13 +32,14 @@ int main(void) {
 	FileSystem system;
 
 	std::string thatsCheating;
+	std::string fileData;
 
 	// ------------------- Vårt -------------------
 
 
 	std::string userCommand, commandArr[MAXCOMMANDS];
 	std::string user = "Pr0n@DV1337";    // Change this if you want another user to be displayed
-	std::string currentDir = "/";	// current directory, used for output
+	std::string currentDir = "root";	// current directory, used for output
 
 	bool bRun = true;
 
@@ -48,11 +50,22 @@ int main(void) {
 		int nrOfCommands = parseCommandString(userCommand, commandArr);
 
 		if (nrOfCommands > 1) { // Forces "/" to become "root/"
-			if (commandArr[1].at(0) == '/') { 
+			
+			if (commandArr[1].at(0) != '/') { 
 				thatsCheating = "";
-				thatsCheating.append("root");
+				thatsCheating.append(currentDir);
+				thatsCheating.append("/");
 				thatsCheating.append(commandArr[1]);
 				commandArr[1] = thatsCheating;
+			}
+			if (nrOfCommands > 2) {
+				if (commandArr[2].at(0) != '/') {
+					thatsCheating = "";
+					thatsCheating.append(currentDir);
+					thatsCheating.append("/");
+					thatsCheating.append(commandArr[2]);
+					commandArr[2] = thatsCheating;
+				}
 			}
 		}
 		
@@ -77,11 +90,13 @@ int main(void) {
 				break;
 			}
 			case 3: { // create 
-				system.Create(commandArr[1]);
+				std::cout << "Enter filedata: \n" << std::endl;
+				getline(std::cin, fileData);
+				system.Create(commandArr[1], fileData);
 				break;
 			}				
 			case 4: {  // cat
-				system.cat(commandArr[1]);
+				std::cout << system.cat(commandArr[1]) << std::endl;
 				break;
 			}
 			case 5: { // createImage
