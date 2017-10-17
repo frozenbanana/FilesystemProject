@@ -2,16 +2,16 @@
 #define FILESYSTEM_HPP
 
 #include "DirectoryManager.hpp"
-// include InodeManager
-// include DatablockManager
-// include Formattor
+#include "INodeManager.h"
+#include "memblockdevice.h"
+#include "block.h"
+
 
 class FileSystem {
 private:
 	DirectoryManager m_DirectoryManager;
-//	InodeManager	 m_InodeManager;
-//	DatablockManager m_DatablockManager;
-//	Formattor		 m_OutputFormattor;
+	INodeManager	 m_InodeManager;
+	MemBlockDevice	 m_DatablockManager;
 
 
 public:
@@ -33,7 +33,7 @@ public:
 	
 	// --------- Shell-Called Functions ---------
 	// Creating & Deleting folders/files
-	void Create(std::string fullpath);
+	void Create(std::string fullpath, std::string fileData);
 	void MakeDirectory(std::string fullpath);
 	void Copy(std::string originalFilePath, std::string newFilePath);
 	void Remove(std::string filePath);

@@ -26,6 +26,7 @@ void BlockHandle::SetBlock(Block* dataBlock_in)
 
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -104,7 +105,7 @@ void INode::InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int Bl
      currentArraySlot++;
      blocksLeft--;
 
-     tempHandle->m_nextHandle;
+	 tempHandle = tempHandle->m_nextHandle;
    }
 
    while (blocksLeft > 0)
@@ -112,6 +113,7 @@ void INode::InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int Bl
      tempHandle->SetBlock(BlockArray_in[currentArraySlot]);
      currentArraySlot++;
      blocksLeft--; 
+	 tempHandle = tempHandle->m_nextHandle;
    }
 }
 
@@ -155,3 +157,24 @@ bool INode::InsertBlocks(Block* *BlockArray_in, int BlockCount_in)
 
 	return booleanReturnValue;
 }
+
+int INode::GetSize()
+{
+	int temp_intHolder = 0;
+	BlockHandle	*temp_HandleHolder = &m_rootHandle;
+
+	if (temp_HandleHolder->GetBlock() != nullptr)
+	{
+		while (temp_HandleHolder != nullptr)
+		{
+			temp_intHolder++;
+			temp_HandleHolder = temp_HandleHolder->m_nextHandle;
+		}
+
+		return temp_intHolder;
+	}
+
+	else
+		return 0;
+}
+

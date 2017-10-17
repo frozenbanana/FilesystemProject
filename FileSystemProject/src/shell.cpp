@@ -9,6 +9,7 @@
 
 */
 
+
 const int MAXCOMMANDS = 8;
 const int NUMAVAILABLECOMMANDS = 15;
 
@@ -31,6 +32,7 @@ int main(void) {
 	FileSystem system;
 
 	std::string thatsCheating;
+	std::string fileData;
 
 	// ------------------- Vårt -------------------
 
@@ -77,7 +79,9 @@ int main(void) {
 				break;
 			}
 			case 3: { // create 
-				system.Create(commandArr[1]);
+				std::cout << "Enter filedata: \n" << std::endl;
+				getline(std::cin, fileData);
+				system.Create(commandArr[1], fileData);
 				break;
 			}				
 			case 4: {  // cat

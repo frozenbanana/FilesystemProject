@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#define ELEMENTSPERBLOCK 512
+
 class Block
 {
 private:
@@ -13,7 +15,7 @@ private:
 
 public:
     /* Constructor */
-    Block(int nrOfElements = 512);    // overloaded (default) constructor
+    Block(int nrOfElements = ELEMENTSPERBLOCK);    // overloaded (default) constructor
     Block(const Block &other); // copy-constructor
 
     /* Destructor */

@@ -10,6 +10,8 @@ FileSystem::~FileSystem() {
 
 void FileSystem::Initialize() {
 
+
+
 	// DirectoryManager's constructor solves itself.
 }
 void FileSystem::CleanAll() {
@@ -20,34 +22,71 @@ void FileSystem::CleanAll() {
 }
 
 
-
-
-
-
 // --------- Shell-Called Functions ---------//
 //											 //
 // --------- Shell-Called Functions ---------//
 
 // +-+-+-+-+ Creating & Deleting folders/files +-+-+-+-+
-void FileSystem::Create(std::string fullpath /* Also needs the raw file-data*/) {
+void FileSystem::Create(std::string fullpath, std::string fileData) {
 	/* Fetch Datablock from DatablockManager */
 	int datablockID; // = m_DatablockManager.RequestDatablock();
 
 	/* Fetch Inode from InodeManager */
-	Inode InodePointer; // [*]  = m_InodeManager.RequestInode();
-	// InodePointer->DatablockID = dataBlockID;
+	INode* InodePointer = m_InodeManager.PopFreeINode();
 
-	/* Attach this information to a Dnode */
+	/* Attach Datablock to InodePointer */
+	this->m_DatablockManager.JoinBlocksToINode(InodePointer, fileData.size());
+
+	/* Attach fileData to the InodePointer */
+
+	// Parse fileData according to ELEMENTSPERBLOCK
+	int length = fileData.length();
+	int blockCount = length / ELEMENTSPERBLOCK;
+	char** doubleArray = new char*[length];
+
+	
+	BlockHandle* stepper = &InodePointer->m_rootHandle;
+
+	// Per Block
+	for (int i = 0; i < blockCount; i++) {
+		doubleArray[i] = new char[ELEMENTSPERBLOCK];
+
+		// Per character inside a block
+		for (int j = 0; j < ELEMENTSPERBLOCK; j++) {
+			//temp = fileData.at(i * j);
+			doubleArray[i][j] = fileData.at((i*ELEMENTSPERBLOCK) + j);
+			
+		}
+
+		stepper->GetBlock()->writeBlock(doubleArray[i]);
+		stepper = stepper->m_nextHandle;
+	}
+
+
+
+
+
+	
+
+	// InodePoitner->WriteBlock(fileData), <- ska dela upp i mindre getBlock()->writeBlocks()
+
+	/* Attach the Inodepointer to a Dnode */
 	DnodeData data;
 	data.folder = false;
-	data.inodePointer = &InodePointer;
+	data.inodePointer = InodePointer;
 
 	/* Attatch the node to the Directory-Tree */
 	m_DirectoryManager.AddNode(fullpath, data);
+
+	// Clean up
+	for (int i = 0; i < blockCount; i++) {
+		delete[] doubleArray[i];
+	}
+	delete[] doubleArray;
 }
 void FileSystem::MakeDirectory(std::string fullpath) {
 	/* Fetch Inode from InodeManager */
-	Inode InodePointer; // [*] = m_InodeManager.RequestInode();
+	INode InodePointer; // [*] = m_InodeManager.RequestInode();
 	// InodePointer->DatablockID = -1;
 
 	/* Attach this information to a Dnode */
@@ -59,10 +98,26 @@ void FileSystem::MakeDirectory(std::string fullpath) {
 	m_DirectoryManager.AddNode(fullpath, data);
 }
 void FileSystem::Copy(std::string originalFilePath, std::string newFilePath) {
-	// Read
-	// node* = Tillgång till inode via originalfilepath
+	
+	// Fetch the original Inode
+	int pathSize = this->m_DirectoryManager.CalculatePathLength(originalFilePath);
+	std::string *originalSplitPath;
+	this->m_DirectoryManager.SplitAPath(originalFilePath, &originalSplitPath);
+	INode* oldINodePointer = this->m_DirectoryManager.StartStepping(originalSplitPath, pathSize)->data.inodePointer;;
 
-	// Write
+	// Ask for array of Datablocks
+	Block* *newBlockArray;
+	int triangleSize = oldINodePointer->GetSize();
+	this->m_DatablockManager.CopyBlocks(&oldINodePointer->m_rootHandle, triangleSize, &newBlockArray);
+
+	// Request a new Inode
+	INode* newINodePointer = this->m_InodeManager.PopFreeINode();
+
+	// Attach the given array to the new Inode
+	newINodePointer->InsertBlocks(newBlockArray, triangleSize);
+
+	delete[] newBlockArray;
+	delete[] originalSplitPath;
 }
 void FileSystem::Remove(std::string filePath) {
 	m_DirectoryManager.RemoveNode(filePath);

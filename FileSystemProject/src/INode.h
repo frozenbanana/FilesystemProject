@@ -18,8 +18,9 @@ class BlockHandle
   public:
     BlockHandle();
     ~BlockHandle();
-    Block*              GetBlock();
-    void	        SetBlock(Block* Block_in);
+
+    Block*		    GetBlock();
+    void			SetBlock(Block* Block_in);
 
     BlockHandle         *m_nextHandle; // Public in-case someone else needs to 'step'
 };
@@ -33,13 +34,13 @@ class INode
     void				CleanAll();
     void				CleanNextHandle(BlockHandle *BlockHandle_in);
 
-    void        ExtendList(BlockHandle* rootHandle_in, int blockCount_in);
-    void        InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int BlockCount_in);
-
   public:
     INode();
     INode(bool isDirectory_in, bool *permissionData_in);
     ~INode();
+
+	void        ExtendList(BlockHandle* rootHandle_in, int blockCount_in);
+	void        InsertList(BlockHandle* rootHandle_in, Block* *BlockArray_in, int BlockCount_in);
 
     BlockHandle   		m_rootHandle;     // rootHandle public to gain access
 
@@ -49,6 +50,8 @@ class INode
 	 • RECAP: Members of linked list point to 1 Block each
 	 • RETURN VALUE: Address of new 'BlockHandle' member*/
     bool  InsertBlocks(Block* *BlockArray_in, int BlockCount_in);
+
+	int				GetSize();
 };
 
 #endif
