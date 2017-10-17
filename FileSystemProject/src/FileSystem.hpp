@@ -22,14 +22,6 @@ public:
 	void CleanAll();
 
 
-
-
-
-
-
-
-
-
 	
 	// --------- Shell-Called Functions ---------
 	// Creating & Deleting folders/files

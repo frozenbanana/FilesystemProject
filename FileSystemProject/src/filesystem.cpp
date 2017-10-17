@@ -1,5 +1,5 @@
 #include "FileSystem.hpp"
-
+#include <fstream>
 
 FileSystem::FileSystem() {
 
@@ -63,7 +63,7 @@ void FileSystem::Create(std::string fullpath, std::string fileData) {
 	}
 
 
-
+	
 
 
 	
@@ -131,11 +131,46 @@ void FileSystem::Quit() {
 }
 // +-+-+-+-+ Saving & Loading +-+-+-+-+
 void FileSystem::CreateImage() {
+	std::ofstream saveFileSize_fs("sizeOfObject.ros");
+	if (saveFileSize_fs.is_open())
+	{	
+		saveFileSize_fs << sizeof(*this);
+		saveFileSize_fs.close();
+	}
 
+	std::ofstream object_fs("savedFilesystem.ros", std::ios::binary);
+	object_fs.write((char *)this, sizeof(this));
+	if (object_fs.is_open())
+		object_fs.close();
 }
+
 void FileSystem::RestoreImage() {
+	std::ifstream getSizeFile_fs;
+	int sizeOfObject = 0;
 
+	getSizeFile_fs.open("sizeOfObject.ros");
+	if (getSizeFile_fs.is_open())
+	{
+		getSizeFile_fs >> sizeOfObject;
+
+		getSizeFile_fs.close();
+
+		std::ifstream object_fs("sizeOfObject.ros", std::ios::binary);
+
+		if (object_fs.is_open())
+		{
+			object_fs.read((char *)this, sizeOfObject);
+			if (object_fs.is_open())
+				object_fs.close();
+		}
+	}
+
+	else
+	{
+		std::cout << "Daniel does not like this. But this error check means that something is wrong with the filepath of getSizeFile. How helpful (if we actually used it)!" << std::endl;
+	}
 }
+
 // +-+-+-+-+ Output +-+-+-+-+
 std::string FileSystem::cat(std::string filePath) {
 	std::string *splitPath;
@@ -149,6 +184,7 @@ std::string FileSystem::pwd(std::string filePath) {
 
 	return returnData;
 }
+
 // +-+-+-+-+ CurrentDir +-+-+-+-+
 std::string FileSystem::ls() {
 	return m_DirectoryManager.FetchCurrentDirInfo();
